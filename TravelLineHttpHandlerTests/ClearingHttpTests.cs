@@ -1,27 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TravelLineHttpHandler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
-using System.Reflection.Emit;
-using System.Data.SqlTypes;
-using System.Xml;
-using System.Net;
-using System.Xml.Serialization;
-using System.Web;
-using System.Xml.Linq;
-using Microsoft.VisualBasic;
+
 
 namespace TravelLineHttpHandler.Tests
 {
     [TestClass()]
     public class ClearingHttpTests
     {
-        
 
         [TestMethod()]
         public void ClearUrlTest()
@@ -90,6 +74,42 @@ namespace TravelLineHttpHandler.Tests
 
             // assert
             Assert.AreEqual(expectedxmlGet, actualUrlXML);
+        }
+
+        [TestMethod()]
+        public void ClearJSONUrlTest()
+        {
+
+            string urlJSON = @"{""SCHEME"":""http"",""AUTHORITY"":""test.com"",
+                                   ""PATH"": ""users/max/info"",
+                                  ""QUERE"": ""?pass=123456""}";
+
+            // arrange
+            string expectedUrlJSON = @"{""SCHEME"":""http"",""AUTHORITY"":""test.com"",""PATH"":""users/XXX/info"",""QUERE"":""?pass=XXXXXX""}";
+
+            // act
+            TravelLineHttpHandler.ClearingHttp clearHttp = new TravelLineHttpHandler.ClearingHttp();
+            string actualUrlJSON = clearHttp.ClearJSONUrl(urlJSON);
+
+            // assert
+            Assert.AreEqual(expectedUrlJSON, actualUrlJSON);
+        }
+
+        [TestMethod()]
+        public void ClearJSONGetTest()
+        {
+            string getJSON = @"{""SCHEME"":""http"",""AUTHORITY"":""test.com"",
+                                  ""QUERE"": ""?user=max&pass=123456""}";
+
+            // arrange
+            string expectedGetJSON = @"{""SCHEME"":""http"",""AUTHORITY"":""test.com"",""QUERE"":""?user=XXX&pass=XXXXXX""}";
+
+            // act
+            TravelLineHttpHandler.ClearingHttp clearHttp = new TravelLineHttpHandler.ClearingHttp();
+            string actualGetJSON = clearHttp.ClearJSONGet(getJSON);
+
+            // assert
+            Assert.AreEqual(expectedGetJSON, actualGetJSON);
         }
     }
 }
