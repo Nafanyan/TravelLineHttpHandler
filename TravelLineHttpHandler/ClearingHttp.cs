@@ -1,35 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
+using static System.Net.WebRequestMethods;
 
 namespace TravelLineHttpHandler
 {
     public class ClearingHttp
     {
-        public string Url { get; set; }
-        public string RequestBody { get; set; }
-        public string ResponseBody { get; set; }
-
-        public ClearingHttp(string url, string requestBody, string responseBody)
-        {
-            Url = ClearUrl (url);
-            RequestBody = ClearGet (requestBody);
-            ResponseBody = ClearGet (responseBody);
-        }
-
-
-        private Uri StringToUri(string http)
-        {
-            Uri siteUri = new Uri(http);
-            return siteUri;
-        }
 
         public string ClearUrl(string urlString)
         {
-            Uri url = StringToUri(urlString);
+            Uri url = new Uri(urlString);
             string urlCleared = $"{url.Scheme}://{url.DnsSafeHost}";
             string clearSecure = url.PathAndQuery;
 
@@ -46,7 +32,8 @@ namespace TravelLineHttpHandler
             idxSecuStart = clearSecure.IndexOf('=', clearSecure.IndexOf("pass")) + 1;
             idxSecuEnd = clearSecure.Length;
 
-            if (clearSecure.Contains('&')) idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("pass")) + 1;
+            if (clearSecure.Remove(0, clearSecure.IndexOf("pass")).Contains('&'))
+                idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("pass"));
 
             secureData = clearSecure.Remove(idxSecuEnd);
             secureData = secureData.Remove(0, idxSecuStart);
@@ -55,9 +42,9 @@ namespace TravelLineHttpHandler
             return $"{urlCleared}{clearSecure}";
         }
 
-        private string ClearGet(string getString)
+        public string ClearGet(string getString)
         {
-            Uri getUri = StringToUri(getString);
+            Uri getUri = new Uri(getString); ;
             string getCleared = $"{getUri.Scheme}://{getUri.DnsSafeHost}";
             string clearSecure = getUri.Query;
 
@@ -86,10 +73,117 @@ namespace TravelLineHttpHandler
             return $"{getCleared}{clearSecure}";
         }
 
-        public string ClearXML(string getString)
+        public string ClearXMLUrl(string xmlString)
         {
-            return getString;
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlString);
+            XmlNode root = xmlDoc.DocumentElement;
+
+            string clearSecure;
+            int idxSecuStart;
+            int idxSecuEnd;
+            int idxKeyword;
+
+            foreach (XmlNode node in root.ChildNodes)
+            {
+                if (node.Name == "PATH")
+                {
+                    clearSecure = node.InnerText;
+                    idxKeyword = clearSecure.IndexOf("user");
+                    string secureData;
+
+                    if (idxKeyword >= 0)
+                    {
+                        idxSecuStart = clearSecure.IndexOf('/', idxKeyword) + 1;
+                        idxSecuEnd = clearSecure.IndexOf('/', idxSecuStart);
+
+                        secureData = clearSecure.Remove(idxSecuEnd);
+                        secureData = secureData.Remove(0, idxSecuStart);
+                        clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
+
+                    }
+                    node.InnerText = clearSecure;
+                }
+
+                if (node.Name == "QUERE")
+                {
+                    clearSecure = node.InnerText;
+                    idxKeyword = clearSecure.IndexOf("pass");
+                    string secureData;
+
+                    if (idxKeyword >= 0)
+                    {
+                        idxSecuStart = clearSecure.IndexOf('=', idxKeyword) + 1;
+                        idxSecuEnd = clearSecure.Length;
+
+                        if (clearSecure.Remove(0, clearSecure.IndexOf("pass")).Contains('&'))
+                            idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("pass"));
+
+                        secureData = clearSecure.Remove(idxSecuEnd);
+                        secureData = secureData.Remove(0, idxSecuStart);
+                        clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
+                    }
+
+                    node.InnerText = clearSecure;
+                }
+            }
+            return xmlDoc.OuterXml;
         }
 
+        public string ClearXMLGet(string xmlString)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlString);
+            XmlNode root = xmlDoc.DocumentElement;
+
+            string clearSecure;
+            int idxSecuStart;
+            int idxSecuEnd;
+            int idxKeyword;
+
+            foreach (XmlNode node in root.ChildNodes)
+            {
+                if (node.Name == "QUERE")
+                {
+                    //clear name
+                    clearSecure = node.InnerText;
+                    idxKeyword = clearSecure.IndexOf("user");
+                    string secureData;
+
+                    if (idxKeyword >= 0)
+                    {
+                        idxSecuStart = clearSecure.IndexOf('=', idxKeyword) + 1;
+                        idxSecuEnd = clearSecure.Length;
+
+                        if (clearSecure.Remove(0, clearSecure.IndexOf("user")).Contains('&'))
+                            idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("user"));
+
+                        secureData = clearSecure.Remove(idxSecuEnd);
+                        secureData = secureData.Remove(0, idxSecuStart);
+                        clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
+                    }
+                    node.InnerText = clearSecure;
+
+                    // clear pass
+                    clearSecure = node.InnerText;
+                    idxKeyword = clearSecure.IndexOf("pass");
+
+                    if (idxKeyword >= 0)
+                    {
+                        idxSecuStart = clearSecure.IndexOf('=', idxKeyword) + 1;
+                        idxSecuEnd = clearSecure.Length;
+
+                        if (clearSecure.Remove(0, clearSecure.IndexOf("pass")).Contains('&'))
+                            idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("pass"));
+
+                        secureData = clearSecure.Remove(idxSecuEnd);
+                        secureData = secureData.Remove(0, idxSecuStart);
+                        clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
+                    }
+                    node.InnerText = clearSecure;
+                }
+            }
+            return xmlDoc.OuterXml;
+        }
     }
 }
