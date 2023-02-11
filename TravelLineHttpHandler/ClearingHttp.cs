@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TravelLineHttpHandler
 {
@@ -26,70 +27,68 @@ namespace TravelLineHttpHandler
             return siteUri;
         }
 
-        private string ClearUrl(string urlString)
+        public string ClearUrl(string urlString)
         {
             Uri url = StringToUri(urlString);
             string urlCleared = $"{url.Scheme}://{url.DnsSafeHost}";
-            string clearPass = url.PathAndQuery;
+            string clearSecure = url.PathAndQuery;
 
-            bool nowName = false;
-            foreach (string segment in clearPass.Split('/'))
-            {
-                string tempSegment = segment;
+            // clear name
+            string secureData;
+            int idxSecuStart = clearSecure.IndexOf('/', clearSecure.IndexOf("user")) + 1;
+            int idxSecuEnd = clearSecure.IndexOf('/', idxSecuStart);
 
-                // clear name
-                if (nowName)
-                {
-                    tempSegment = tempSegment.Replace(tempSegment,
-                        String.Concat(Enumerable.Repeat("X", tempSegment.Length)));
-                    nowName = false;
-                }
+            secureData = clearSecure.Remove(idxSecuEnd);
+            secureData = secureData.Remove(0, idxSecuStart);
+            clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
 
-                // clear pass
-                if (segment.Contains("pass="))
-                {
-                    int passStart = tempSegment.IndexOf('=') + 1;
-                    int passEnd = tempSegment.Length;
+            // clear pass
+            idxSecuStart = clearSecure.IndexOf('=', clearSecure.IndexOf("pass")) + 1;
+            idxSecuEnd = clearSecure.Length;
 
-                    if (segment.Contains('&')) passEnd = tempSegment.IndexOf('&');
+            if (clearSecure.Contains('&')) idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("pass")) + 1;
 
-                    for (int i = passStart; i < passEnd; i++)
-                        tempSegment = tempSegment.Replace(tempSegment[i], 'X');
-                }
+            secureData = clearSecure.Remove(idxSecuEnd);
+            secureData = secureData.Remove(0, idxSecuStart);
+            clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
 
-                if (segment.Contains("user")) nowName = true;
-
-                urlCleared += $"{tempSegment}/";
-            }
-            return urlCleared.Remove(urlCleared.Length - 1);
+            return $"{urlCleared}{clearSecure}";
         }
 
         private string ClearGet(string getString)
         {
             Uri getUri = StringToUri(getString);
             string getCleared = $"{getUri.Scheme}://{getUri.DnsSafeHost}";
+            string clearSecure = getUri.Query;
 
-            // clear pass and user
-            string clearPass = getUri.Query;
+            // clear name 
+            string secureData;
+            int idxSecuStart = clearSecure.IndexOf('=', clearSecure.IndexOf("user")) + 1;
+            int idxSecuEnd = clearSecure.Length;
 
-            foreach (string segment in clearPass.Split('&'))
-            {
-                string tempSegment = segment;
+            if (clearSecure.Contains('&')) idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("user"));
 
-                if (segment.Contains("pass=") || segment.Contains("user="))
-                {
-                    int passStart = tempSegment.IndexOf('=') + 1;
-                    int passEnd = tempSegment.Length;
+            secureData = clearSecure.Remove(idxSecuEnd);
+            secureData = secureData.Remove(0, idxSecuStart);
+            clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
 
-                    for (int i = passStart; i < passEnd; i++)
-                        tempSegment = tempSegment.Replace(tempSegment[i], 'X');
+            // clear pass
+            idxSecuStart = clearSecure.IndexOf('=', clearSecure.IndexOf("pass")) + 1;
+            idxSecuEnd = clearSecure.Length;
 
-                }
+            if (clearSecure.Remove(0, clearSecure.IndexOf("pass")).Contains('&')) 
+                idxSecuEnd = clearSecure.IndexOf('&', clearSecure.IndexOf("pass"));
 
+            secureData = clearSecure.Remove(idxSecuEnd);
+            secureData = secureData.Remove(0, idxSecuStart);
+            clearSecure = clearSecure.Replace(secureData, String.Concat(Enumerable.Repeat("X", secureData.Length)));
 
-                getCleared += $"{tempSegment}&";
-            }
-            return getCleared.Remove(getCleared.Length - 1);
+            return $"{getCleared}{clearSecure}";
+        }
+
+        public string ClearXML(string getString)
+        {
+            return getString;
         }
 
     }
