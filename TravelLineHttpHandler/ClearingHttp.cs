@@ -16,8 +16,38 @@ namespace TravelLineHttpHandler
 {
     public class ClearingHttp
     {
+        public HttpResult Process(string url, string requestBody, string responseBody)
+        {
+            HttpResult clearedHttp = new HttpResult();
 
-        public string ClearUrl(string urlString)
+            // if XML
+            if (url.Contains("</") && url.Contains('>'))
+            {
+                clearedHttp.Url = ClearXMLUrl(url);
+                clearedHttp.RequestBody = ClearXMLGet(requestBody);
+                clearedHttp.ResponseBody = ClearXMLGet(responseBody);
+                return clearedHttp;
+            }
+
+            // if JSON
+            if (url.Contains('{') && url.Contains('}') && url.Contains(':'))
+            {
+                clearedHttp.Url = ClearJSONUrl(url);
+                clearedHttp.RequestBody = ClearJSONGet(requestBody);
+                clearedHttp.ResponseBody = ClearJSONGet(responseBody);
+                return clearedHttp;
+            }
+
+            // if the usual http
+            clearedHttp.Url = ClearUrl(url);
+            clearedHttp.RequestBody = ClearGet(requestBody);
+            clearedHttp.ResponseBody = ClearGet(responseBody);
+
+            return clearedHttp;
+
+        }
+
+        private string ClearUrl(string urlString)
         {
             Uri url = new Uri(urlString);
             string urlCleared = $"{url.Scheme}://{url.DnsSafeHost}";
@@ -46,7 +76,7 @@ namespace TravelLineHttpHandler
             return $"{urlCleared}{clearSecure}";
         }
 
-        public string ClearGet(string getString)
+        private string ClearGet(string getString)
         {
             Uri getUri = new Uri(getString); ;
             string getCleared = $"{getUri.Scheme}://{getUri.DnsSafeHost}";
@@ -77,7 +107,7 @@ namespace TravelLineHttpHandler
             return $"{getCleared}{clearSecure}";
         }
 
-        public string ClearXMLUrl(string xmlString)
+        private string ClearXMLUrl(string xmlString)
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlString);
@@ -133,10 +163,11 @@ namespace TravelLineHttpHandler
                     node.InnerText = clearSecure;
                 }
             }
+
             return xmlDoc.OuterXml;
         }
 
-        public string ClearXMLGet(string xmlString)
+        private string ClearXMLGet(string xmlString)
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlString);
@@ -189,10 +220,11 @@ namespace TravelLineHttpHandler
                     node.InnerText = clearSecure;
                 }
             }
+
             return xmlDoc.OuterXml;
         }
 
-        public string ClearJSONUrl(string jsonString)
+        private string ClearJSONUrl(string jsonString)
         {
             JObject jsonDoc = JObject.Parse(jsonString);
 
@@ -244,13 +276,12 @@ namespace TravelLineHttpHandler
                     }
                     jsonDoc["QUERE"] = clearSecure;
                 }
-
             }
 
             return JsonConvert.SerializeObject(jsonDoc); 
         }
 
-        public string ClearJSONGet(string jsonString)
+        private string ClearJSONGet(string jsonString)
         {
             JObject jsonDoc = JObject.Parse(jsonString);
 
@@ -300,7 +331,6 @@ namespace TravelLineHttpHandler
                     }
                     jsonDoc["QUERE"] = clearSecure;
                 }
-
             }
 
             return JsonConvert.SerializeObject(jsonDoc);
