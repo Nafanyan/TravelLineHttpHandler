@@ -11,7 +11,7 @@ namespace TravelLineHttpHandler.ConcreteCleaner
     {
         protected override IClearingHttp CreateClearingElement()
         {
-            return new ClearingXML();
+            return new ClearingJSON();
         }
     }
 }

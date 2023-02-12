@@ -18,10 +18,11 @@ namespace TravelLineHttpHandler
             // if XML
             if (http.Contains("</") && http.Contains('>'))
             {
-                this.cleaner = new JSONCleaner();
+                this.cleaner = new XMLCleaner();
                 return;
             }
 
+            // if JSON
             if (http.Contains('{') && http.Contains('}') && http.Contains(':'))
             {
                 this.cleaner = new JSONCleaner();

@@ -72,5 +72,28 @@ namespace TravelLineHttpHandler.Tests
             // assert
             Assert.AreEqual(expectedXML, HttpResultXML);
         }
+
+        [TestMethod()]
+        public void ApplicationTests_SecureDataClearTest_HttpResultJSON_ClearSecureData()
+        {
+            // arrange
+            string jsonString = @"{ ""scheme"":""http"",
+                                    ""authority"":""test.com"",
+                                    ""user_data"": 
+                                    {
+                                    ""username"":""max"",
+                                    ""password"":""123456""
+                                    }
+                                }";
+
+            string expectedJSON = @"{""scheme"":""http"",""authority"":""test.com"",""user_data"":{""username"":""XXX"",""password"":""XXXXXX""}}";
+
+            // act
+            Application app = new Application();
+            string HttpResultJSON = app.SecureDataClear(jsonString, new string[] { "user_data.username", "user_data.password" });
+
+            // assert
+            Assert.AreEqual(expectedJSON, HttpResultJSON);
+        }
     }
 }
