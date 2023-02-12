@@ -23,7 +23,7 @@ namespace TravelLineHttpHandler.Tests
             };
 
             // act 
-            HttpHandlerLog httpLogHandler  = new HttpHandlerLog();
+            HttpHandler httpLogHandler  = new HttpHandler();
             httpLogHandler.Process(bookingcomHttpResult.Url, bookingcomHttpResult.RequestBody, bookingcomHttpResult.ResponseBody, new ClearingHttp());
 
             // assert

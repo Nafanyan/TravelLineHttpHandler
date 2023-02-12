@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TravelLineHttpHandler
 {
-    public class HttpHandlerLog
+    public class HttpHandler
     {
         HttpResult _currentLog;
         public HttpResult CurrentLog { get { return _currentLog; } }
