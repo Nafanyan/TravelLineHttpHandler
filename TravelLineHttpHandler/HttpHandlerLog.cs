@@ -11,7 +11,7 @@ namespace TravelLineHttpHandler
         HttpResult _currentLog;
         public HttpResult CurrentLog { get { return _currentLog; } }
 
-        public string Process(string url, string body, string response, ClearingHttp1 clearingHttp)
+        public string Process(string url, string body, string response, params string[] secureParam)
         {
             var httpResult = new HttpResult
             {
@@ -21,7 +21,15 @@ namespace TravelLineHttpHandler
             };
 
             //очищаем secure данные в httpResult, либо создаем новый clearedHttpResult на основе httpResult
-            HttpResult clearedHttpResult = clearingHttp.Process(url, body, response);
+
+            ClearedHttp clHttp = new ClearedHttp();
+            HttpResult clearedHttpResult = new HttpResult
+            {
+                Url = clHttp.SecureDataClear(url, secureParam),
+                RequestBody = clHttp.SecureDataClear(body, secureParam),
+                ResponseBody = clHttp.SecureDataClear(response, secureParam)
+            };
+
 
             Log(clearedHttpResult);
 

@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 namespace TravelLineHttpHandler.Tests
 {
     [TestClass()]
-    public class ApplicationTests
+    public class ClearedHttpTests
     {
 
         [TestMethod()]
-        public void ApplicationTests_SecureDataClearTest_HttpResultURLWeb_ClearSecureData()
+        public void ClearedHttpTests_SecureDataClearTest_HttpResultURLWeb_ClearSecureData()
         {
             // arrange
             string Url = "http://test.com/users/max/info?pass=123456";
 
             // act
-            Application app = new Application();
+            ClearedHttp app = new ClearedHttp();
             string HttpResultURLWeb = app.SecureDataClear(Url, new string[] { "user", "pass" });
 
             // assert
@@ -27,13 +27,13 @@ namespace TravelLineHttpHandler.Tests
         }
 
         [TestMethod()]
-        public void ApplicationTests_SecureDataClearTest_HttpResultRequestWeb_ClearSecureData()
+        public void ClearedHttpTests_SecureDataClearTest_HttpResultRequestWeb_ClearSecureData()
         {
             // arrange
             string RequestBody = "http://test.com?user=max&pass=123456";
 
             // act
-            Application app = new Application();
+            ClearedHttp app = new ClearedHttp();
             string HttpResultRequestWeb = app.SecureDataClear(RequestBody, new string[] { "user", "pass" });
 
             // assert
@@ -41,13 +41,13 @@ namespace TravelLineHttpHandler.Tests
         }
 
         [TestMethod()]
-        public void ApplicationTests_SecureDataClearTest_HttpResultResponseWeb_ClearSecureData()
+        public void ClearedHttpTests_SecureDataClearTest_HttpResultResponseWeb_ClearSecureData()
         {
             // arrange
             string ResponseBody = "http://test.com?user=max&pass=123456";
 
             // act
-            Application app = new Application();
+            ClearedHttp app = new ClearedHttp();
             string HttpResultResponseWeb = app.SecureDataClear(ResponseBody, new string[] { "user", "pass" });
 
             // assert
@@ -55,7 +55,7 @@ namespace TravelLineHttpHandler.Tests
         }
 
         [TestMethod()]
-        public void ApplicationTests_SecureDataClearTest_HttpResultXML_ClearSecureData()
+        public void ClearedHttpTests_SecureDataClearTest_HttpResultXML_ClearSecureData()
         {
             // arrange
             string xmlString = @"<root>
@@ -66,7 +66,7 @@ namespace TravelLineHttpHandler.Tests
                     </root>";
             string expectedXML = @"<root><user_data><username>XXX</username><password>XXXXXX</password></user_data></root>";
             // act
-            Application app = new Application();
+            ClearedHttp app = new ClearedHttp();
             string HttpResultXML = app.SecureDataClear(xmlString, new string[] { "username", "password" });
 
             // assert
@@ -74,7 +74,7 @@ namespace TravelLineHttpHandler.Tests
         }
 
         [TestMethod()]
-        public void ApplicationTests_SecureDataClearTest_HttpResultJSON_ClearSecureData()
+        public void ClearedHttpTests_SecureDataClearTest_HttpResultJSON_ClearSecureData()
         {
             // arrange
             string jsonString = @"{ ""scheme"":""http"",
@@ -89,7 +89,7 @@ namespace TravelLineHttpHandler.Tests
             string expectedJSON = @"{""scheme"":""http"",""authority"":""test.com"",""user_data"":{""username"":""XXX"",""password"":""XXXXXX""}}";
 
             // act
-            Application app = new Application();
+            ClearedHttp app = new ClearedHttp();
             string HttpResultJSON = app.SecureDataClear(jsonString, new string[] { "user_data.username", "user_data.password" });
 
             // assert

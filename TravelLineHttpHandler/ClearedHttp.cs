@@ -8,9 +8,9 @@ using TravelLineHttpHandler.ConcreteCleaner;
 
 namespace TravelLineHttpHandler
 {
-    public class Application
+    public class ClearedHttp
     {
-        Cleaner cleaner;
+        Cleaner _cleaner;
 
         private void InitCleaner(string http)
         {
@@ -18,23 +18,24 @@ namespace TravelLineHttpHandler
             // if XML
             if (http.Contains("</") && http.Contains('>'))
             {
-                this.cleaner = new XMLCleaner();
+                _cleaner = new XMLCleaner();
                 return;
             }
 
             // if JSON
             if (http.Contains('{') && http.Contains('}') && http.Contains(':'))
             {
-                this.cleaner = new JSONCleaner();
+                _cleaner = new JSONCleaner();
                 return;
             }
-            this.cleaner = new WebCleaner();
+            // if Web
+            _cleaner = new WebCleaner();
         }
 
         public string SecureDataClear(string httpString, params string[] secureParam)
         {
             InitCleaner(httpString);
-            return cleaner.ProcessClearing(httpString, secureParam); ;
+            return _cleaner.ProcessClearing(httpString, secureParam);
         }
 
 
