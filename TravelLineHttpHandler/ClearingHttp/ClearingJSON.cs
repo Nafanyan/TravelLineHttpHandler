@@ -8,7 +8,7 @@ namespace TravelLineHttpHandler.ClearingHttp
 {
     public class ClearingJSON : IClearingHttp
     {
-        string IClearingHttp.clearingUrl(string JSONString, params string[] secureParam)
+        string IClearingHttp.clearingUrl(string jsonString, params string[] secureParam)
         {
             throw new NotImplementedException();
         }

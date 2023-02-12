@@ -53,5 +53,24 @@ namespace TravelLineHttpHandler.Tests
             // assert
             Assert.AreEqual("http://test.com?user=XXX&pass=XXXXXX", HttpResultResponseWeb);
         }
+
+        [TestMethod()]
+        public void ApplicationTests_SecureDataClearTest_HttpResultXML_ClearSecureData()
+        {
+            // arrange
+            string xmlString = @"<root>
+                        <user_data>
+                            <username>max</username>
+                            <password>123456</password>
+                        </user_data>
+                    </root>";
+            string expectedXML = @"<root><user_data><username>XXX</username><password>XXXXXX</password></user_data></root>";
+            // act
+            Application app = new Application();
+            string HttpResultXML = app.SecureDataClear(xmlString, new string[] { "username", "password" });
+
+            // assert
+            Assert.AreEqual(expectedXML, HttpResultXML);
+        }
     }
 }
