@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace TravelLineHttpHandler.Tests
 {
     [TestClass()]
-    public class HttpHandlerTests
+    public class HttpHandlerLogTests
     {
         [TestMethod()]
-        public void HttpHandler_Process_BookingcomHttpResult_ClearSecureData()
+        public void HttpHandlerLog_Process_BookingcomHttpResult_ClearSecureData()
         {
             // arrange 
             var bookingcomHttpResult = new HttpResult
@@ -23,7 +23,7 @@ namespace TravelLineHttpHandler.Tests
             };
 
             // act 
-            HttpHandler httpLogHandler  = new HttpHandler();
+            HttpHandlerLog httpLogHandler  = new HttpHandlerLog();
             httpLogHandler.Process(bookingcomHttpResult.Url, bookingcomHttpResult.RequestBody, bookingcomHttpResult.ResponseBody, new ClearingHttp());
 
             // assert
