@@ -14,7 +14,7 @@ using static System.Net.WebRequestMethods;
 
 namespace TravelLineHttpHandler
 {
-    public class ClearingHttp
+    public class ClearingHttp1
     {
         public HttpResult Process(string url, string requestBody, string responseBody)
         {

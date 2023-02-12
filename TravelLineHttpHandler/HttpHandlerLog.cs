@@ -11,7 +11,7 @@ namespace TravelLineHttpHandler
         HttpResult _currentLog;
         public HttpResult CurrentLog { get { return _currentLog; } }
 
-        public string Process(string url, string body, string response, ClearingHttp clearingHttp)
+        public string Process(string url, string body, string response, ClearingHttp1 clearingHttp)
         {
             var httpResult = new HttpResult
             {
