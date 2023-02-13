@@ -17,7 +17,8 @@ namespace TravelLineHttpHandler
 
             //очищаем secure данные в httpResult, либо создаем новый clearedHttpResult на основе httpResult
 
-            RequestCleaner requestCleaner = new RequestCleaner(new CleanerFactory());
+            ICleanerFactory cleanerFactory = new CleanerFactory();
+            RequestCleaner requestCleaner = new RequestCleaner(cleanerFactory);
 
             HttpResult clearedHttpResult = new HttpResult
             {
