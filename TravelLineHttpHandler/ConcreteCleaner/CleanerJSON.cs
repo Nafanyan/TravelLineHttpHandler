@@ -1,17 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace TravelLineHttpHandler.ClearingHttp 
 {
-    public class ClearingJSON : IClearingHttp
+    internal class CleanerJSON : ICleaner
     {
-        string IClearingHttp.clearingUrl(string jsonString, params string[] secureParams)
+        string ICleaner.Clean(string jsonString, params string[] secureParams)
         {
             JObject jsonDoc = JObject.Parse(jsonString);
 

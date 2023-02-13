@@ -1,10 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TravelLineHttpHandler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelLineHttpHandler.Tests
 {
@@ -19,7 +13,7 @@ namespace TravelLineHttpHandler.Tests
             string Url = "http://test.com/users/max/info?pass=123456";
 
             // act
-            ClearedHttp app = new ClearedHttp();
+            HttpCleanerFactory app = new HttpCleanerFactory();
             string HttpResultURLWeb = app.SecureDataClear(Url, new string[] { "user", "pass" });
 
             // assert
@@ -33,7 +27,7 @@ namespace TravelLineHttpHandler.Tests
             string RequestBody = "http://test.com?user=max&pass=123456";
 
             // act
-            ClearedHttp app = new ClearedHttp();
+            HttpCleanerFactory app = new HttpCleanerFactory();
             string HttpResultRequestWeb = app.SecureDataClear(RequestBody, new string[] { "user", "pass" });
 
             // assert
@@ -47,7 +41,7 @@ namespace TravelLineHttpHandler.Tests
             string ResponseBody = "http://test.com?user=max&pass=123456";
 
             // act
-            ClearedHttp app = new ClearedHttp();
+            HttpCleanerFactory app = new HttpCleanerFactory();
             string HttpResultResponseWeb = app.SecureDataClear(ResponseBody, new string[] { "user", "pass" });
 
             // assert
@@ -66,7 +60,7 @@ namespace TravelLineHttpHandler.Tests
                     </root>";
             string expectedXML = @"<root><user_data><username>XXX</username><password>XXXXXX</password></user_data></root>";
             // act
-            ClearedHttp app = new ClearedHttp();
+            HttpCleanerFactory app = new HttpCleanerFactory();
             string HttpResultXML = app.SecureDataClear(xmlString, new string[] { "username", "password" });
 
             // assert
@@ -89,7 +83,7 @@ namespace TravelLineHttpHandler.Tests
             string expectedJSON = @"{""scheme"":""http"",""authority"":""test.com"",""user_data"":{""username"":""XXX"",""password"":""XXXXXX""}}";
 
             // act
-            ClearedHttp app = new ClearedHttp();
+            HttpCleanerFactory app = new HttpCleanerFactory();
             string HttpResultJSON = app.SecureDataClear(jsonString, new string[] { "user_data.username", "user_data.password" });
 
             // assert

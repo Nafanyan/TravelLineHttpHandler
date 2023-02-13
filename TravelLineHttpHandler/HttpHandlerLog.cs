@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TravelLineHttpHandler
 {
     public class HttpHandler
@@ -22,7 +17,7 @@ namespace TravelLineHttpHandler
 
             //очищаем secure данные в httpResult, либо создаем новый clearedHttpResult на основе httpResult
 
-            ClearedHttp clHttp = new ClearedHttp();
+            HttpCleanerFactory clHttp = new HttpCleanerFactory();
             HttpResult clearedHttpResult = new HttpResult
             {
                 Url = clHttp.SecureDataClear(url, secureParam),

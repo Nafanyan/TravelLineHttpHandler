@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace TravelLineHttpHandler.ClearingHttp
 {
-    internal class ClearingWeb : IClearingHttp
+    internal class CleanerWeb : ICleaner
     {
-        string IClearingHttp.clearingUrl(string webString, params string[] secureParams)
+        string ICleaner.Clean(string webString, params string[] secureParams)
         {
 
             string secureData = webString;

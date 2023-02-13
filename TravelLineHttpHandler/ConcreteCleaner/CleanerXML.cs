@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Xml;
 
 namespace TravelLineHttpHandler.ClearingHttp
 {
-    internal class ClearingXML : IClearingHttp
+    internal class CleanerXML : ICleaner
     {
-        string IClearingHttp.clearingUrl(string xmlString, params string[] secureParams)
+        string ICleaner.Clean(string xmlString, params string[] secureParams)
         {
             XmlDocument? xmlDoc = new XmlDocument();
 
