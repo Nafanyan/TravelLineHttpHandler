@@ -13,7 +13,7 @@ namespace TravelLineHttpHandler.Tests
             string Url = "http://test.com/users/max/info?pass=123456";
 
             // act
-            HttpCleanerFactory app = new HttpCleanerFactory();
+            CleanerFactory app = new CleanerFactory();
             string HttpResultURLWeb = app.SecureDataClear(Url, new string[] { "user", "pass" });
 
             // assert
@@ -27,7 +27,7 @@ namespace TravelLineHttpHandler.Tests
             string RequestBody = "http://test.com?user=max&pass=123456";
 
             // act
-            HttpCleanerFactory app = new HttpCleanerFactory();
+            CleanerFactory app = new CleanerFactory();
             string HttpResultRequestWeb = app.SecureDataClear(RequestBody, new string[] { "user", "pass" });
 
             // assert
@@ -41,7 +41,7 @@ namespace TravelLineHttpHandler.Tests
             string ResponseBody = "http://test.com?user=max&pass=123456";
 
             // act
-            HttpCleanerFactory app = new HttpCleanerFactory();
+            CleanerFactory app = new CleanerFactory();
             string HttpResultResponseWeb = app.SecureDataClear(ResponseBody, new string[] { "user", "pass" });
 
             // assert
@@ -60,7 +60,7 @@ namespace TravelLineHttpHandler.Tests
                     </root>";
             string expectedXML = @"<root><user_data><username>XXX</username><password>XXXXXX</password></user_data></root>";
             // act
-            HttpCleanerFactory app = new HttpCleanerFactory();
+            CleanerFactory app = new CleanerFactory();
             string HttpResultXML = app.SecureDataClear(xmlString, new string[] { "username", "password" });
 
             // assert
@@ -83,7 +83,7 @@ namespace TravelLineHttpHandler.Tests
             string expectedJSON = @"{""scheme"":""http"",""authority"":""test.com"",""user_data"":{""username"":""XXX"",""password"":""XXXXXX""}}";
 
             // act
-            HttpCleanerFactory app = new HttpCleanerFactory();
+            CleanerFactory app = new CleanerFactory();
             string HttpResultJSON = app.SecureDataClear(jsonString, new string[] { "user_data.username", "user_data.password" });
 
             // assert

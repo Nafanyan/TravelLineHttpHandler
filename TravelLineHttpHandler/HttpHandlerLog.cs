@@ -17,12 +17,13 @@ namespace TravelLineHttpHandler
 
             //очищаем secure данные в httpResult, либо создаем новый clearedHttpResult на основе httpResult
 
-            HttpCleanerFactory clHttp = new HttpCleanerFactory();
+            RequestCleaner requestCleaner = new RequestCleaner(new CleanerFactory());
+
             HttpResult clearedHttpResult = new HttpResult
             {
-                Url = clHttp.SecureDataClear(url, secureParam),
-                RequestBody = clHttp.SecureDataClear(body, secureParam),
-                ResponseBody = clHttp.SecureDataClear(response, secureParam)
+                Url = requestCleaner.ClearRequest(url, secureParam),
+                RequestBody = requestCleaner.ClearRequest(body, secureParam),
+                ResponseBody = requestCleaner.ClearRequest(response, secureParam)
             };
 
 
