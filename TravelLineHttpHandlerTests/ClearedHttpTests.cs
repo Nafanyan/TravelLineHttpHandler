@@ -7,49 +7,49 @@ namespace TravelLineHttpHandler.Tests
     {
 
         [TestMethod()]
-        public void ClearedHttpTests_SecureDataClearTest_HttpResultURLWeb_ClearSecureData()
+        public void CleanerFactoryTests_SecureDataClearTest_HttpResultURLWeb_ClearSecureData()
         {
             // arrange
             string Url = "http://test.com/users/max/info?pass=123456";
 
             // act
-            CleanerFactory app = new CleanerFactory();
-            string HttpResultURLWeb = app.SecureDataClear(Url, new string[] { "user", "pass" });
+            CleanerFactory cleanerFactory = new CleanerFactory();
+            string HttpResultURLWeb = cleanerFactory.SecureDataClear(Url, new string[] { "user", "pass" });
 
             // assert
             Assert.AreEqual("http://test.com/users/XXX/info?pass=XXXXXX", HttpResultURLWeb);
         }
 
         [TestMethod()]
-        public void ClearedHttpTests_SecureDataClearTest_HttpResultRequestWeb_ClearSecureData()
+        public void CleanerFactoryTests_SecureDataClearTest_HttpResultRequestWeb_ClearSecureData()
         {
             // arrange
             string RequestBody = "http://test.com?user=max&pass=123456";
 
             // act
-            CleanerFactory app = new CleanerFactory();
-            string HttpResultRequestWeb = app.SecureDataClear(RequestBody, new string[] { "user", "pass" });
+            CleanerFactory cleanerFactory = new CleanerFactory();
+            string HttpResultRequestWeb = cleanerFactory.SecureDataClear(RequestBody, new string[] { "user", "pass" });
 
             // assert
             Assert.AreEqual("http://test.com?user=XXX&pass=XXXXXX", HttpResultRequestWeb);
         }
 
         [TestMethod()]
-        public void ClearedHttpTests_SecureDataClearTest_HttpResultResponseWeb_ClearSecureData()
+        public void CleanerFactoryTests_SecureDataClearTest_HttpResultResponseWeb_ClearSecureData()
         {
             // arrange
             string ResponseBody = "http://test.com?user=max&pass=123456";
 
             // act
-            CleanerFactory app = new CleanerFactory();
-            string HttpResultResponseWeb = app.SecureDataClear(ResponseBody, new string[] { "user", "pass" });
+            CleanerFactory cleanerFactory = new CleanerFactory();
+            string HttpResultResponseWeb = cleanerFactory.SecureDataClear(ResponseBody, new string[] { "user", "pass" });
 
             // assert
             Assert.AreEqual("http://test.com?user=XXX&pass=XXXXXX", HttpResultResponseWeb);
         }
 
         [TestMethod()]
-        public void ClearedHttpTests_SecureDataClearTest_HttpResultXML_ClearSecureData()
+        public void CleanerFactoryTests_SecureDataClearTest_HttpResultXML_ClearSecureData()
         {
             // arrange
             string xmlString = @"<root>
@@ -60,15 +60,15 @@ namespace TravelLineHttpHandler.Tests
                     </root>";
             string expectedXML = @"<root><user_data><username>XXX</username><password>XXXXXX</password></user_data></root>";
             // act
-            CleanerFactory app = new CleanerFactory();
-            string HttpResultXML = app.SecureDataClear(xmlString, new string[] { "username", "password" });
+            CleanerFactory cleanerFactory = new CleanerFactory();
+            string HttpResultXML = cleanerFactory.SecureDataClear(xmlString, new string[] { "username", "password" });
 
             // assert
             Assert.AreEqual(expectedXML, HttpResultXML);
         }
 
         [TestMethod()]
-        public void ClearedHttpTests_SecureDataClearTest_HttpResultJSON_ClearSecureData()
+        public void CleanerFactoryTests_SecureDataClearTest_HttpResultJSON_ClearSecureData()
         {
             // arrange
             string jsonString = @"{ ""scheme"":""http"",
@@ -83,8 +83,8 @@ namespace TravelLineHttpHandler.Tests
             string expectedJSON = @"{""scheme"":""http"",""authority"":""test.com"",""user_data"":{""username"":""XXX"",""password"":""XXXXXX""}}";
 
             // act
-            CleanerFactory app = new CleanerFactory();
-            string HttpResultJSON = app.SecureDataClear(jsonString, new string[] { "user_data.username", "user_data.password" });
+            CleanerFactory cleanerFactory = new CleanerFactory();
+            string HttpResultJSON = cleanerFactory.SecureDataClear(jsonString, new string[] { "user_data.username", "user_data.password" });
 
             // assert
             Assert.AreEqual(expectedJSON, HttpResultJSON);
