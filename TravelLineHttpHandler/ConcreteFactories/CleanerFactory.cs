@@ -1,5 +1,5 @@
 ﻿using TravelLineHttpHandler.Interfaces;
-using TravelLineHttpHandler.ConcreteCleaner;
+using TravelLineHttpHandler.ConcreteCleaners;
 
 namespace TravelLineHttpHandler.ConcreteFactories
 {

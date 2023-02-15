@@ -1,6 +1,6 @@
 ﻿using TravelLineHttpHandler.Interfaces;
 
-namespace TravelLineHttpHandler.ConcreteCleaner
+namespace TravelLineHttpHandler.ConcreteCleaners
 {
     public class CleanerWeb : ICleaner
     {
