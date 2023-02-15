@@ -1,15 +1,11 @@
-﻿
-using TravelLineHttpHandler.ClearingHttp;
+﻿using TravelLineHttpHandler.Interfaces;
+using TravelLineHttpHandler.ConcreteCleaner;
 
-
-
-namespace TravelLineHttpHandler
+namespace TravelLineHttpHandler.ConcreteFactories
 {
     public class CleanerFactory : ICleanerFactory
     {
-        private readonly ICleaner _cleaner;
-
-        ICleaner ICleanerFactory.GetCleaner(string requestString)
+        public ICleaner GetCleaner(string requestString)
         {
             // if XML
             if (requestString.Contains("</") && requestString.Contains('>'))
@@ -26,13 +22,5 @@ namespace TravelLineHttpHandler
             // if Web
             return new CleanerWeb();
         }
-
-        public string SecureDataClear(string requestString, params string[] secureParam)
-        {
-            //_cleaner = Get
-            ICleaner _cleaner = ((ICleanerFactory)this).GetCleaner(requestString);
-            return _cleaner.Clean(requestString, secureParam);
-        }
-
     }
 }

@@ -1,4 +1,6 @@
-﻿
+﻿using TravelLineHttpHandler.Interfaces;
+using TravelLineHttpHandler.ConcreteFactories;
+
 namespace TravelLineHttpHandler
 {
     public class HttpHandler
@@ -22,9 +24,9 @@ namespace TravelLineHttpHandler
 
             HttpResult clearedHttpResult = new HttpResult
             {
-                Url = requestCleaner.ClearRequest(url, secureParam),
-                RequestBody = requestCleaner.ClearRequest(body, secureParam),
-                ResponseBody = requestCleaner.ClearRequest(response, secureParam)
+                Url = requestCleaner.ClearRequest(httpResult.Url, secureParam),
+                RequestBody = requestCleaner.ClearRequest(httpResult.RequestBody, secureParam),
+                ResponseBody = requestCleaner.ClearRequest(httpResult.ResponseBody, secureParam)
             };
 
 

@@ -1,7 +1,8 @@
-﻿
+﻿using TravelLineHttpHandler.Interfaces;
+
 namespace TravelLineHttpHandler
 {
-    internal class RequestCleaner
+    public class RequestCleaner
     {
         private readonly ICleanerFactory _factory;
 

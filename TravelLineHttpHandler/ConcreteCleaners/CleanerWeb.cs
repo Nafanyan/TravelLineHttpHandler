@@ -1,8 +1,8 @@
-﻿
+﻿using TravelLineHttpHandler.Interfaces;
 
-namespace TravelLineHttpHandler.ClearingHttp
+namespace TravelLineHttpHandler.ConcreteCleaner
 {
-    internal class CleanerWeb : ICleaner
+    public class CleanerWeb : ICleaner
     {
         string ICleaner.Clean(string webString, params string[] secureParams)
         {

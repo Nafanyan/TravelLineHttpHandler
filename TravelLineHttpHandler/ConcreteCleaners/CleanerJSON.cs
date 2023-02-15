@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using TravelLineHttpHandler.Interfaces;
 
-namespace TravelLineHttpHandler.ClearingHttp 
+namespace TravelLineHttpHandler.ConcreteCleaner
 {
-    internal class CleanerJSON : ICleaner
+    public class CleanerJSON : ICleaner
     {
         string ICleaner.Clean(string jsonString, params string[] secureParams)
         {
